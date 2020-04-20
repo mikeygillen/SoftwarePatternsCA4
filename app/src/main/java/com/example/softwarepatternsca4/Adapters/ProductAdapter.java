@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4;
+package com.example.softwarepatternsca4.Adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.softwarepatternsca4.Classes.Product;
+import com.example.softwarepatternsca4.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -17,11 +19,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private static final String TAG = "ProductRecyclerAdapter";
 
     private ArrayList<Product> productItems;
-    private ArrayList<Product> filteredItems;
+    //private ArrayList<Product> filteredItems;
     private OnProductListener mOnProductListener;
-
-
-    //private OnItemClickListener mListener;
 
     @NonNull
     @Override
@@ -37,15 +36,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.name.setText(currentItem.getName());
         holder.manufacturer.setText(currentItem.getManufacturer());
-        holder.category.setText(currentItem.getName());
+        holder.category.setText(currentItem.getCategory());
         holder.price.setText("$" + currentItem.getPrice());
+        holder.quantity.setText(currentItem.getQuantity() + " Still in stock");
         Picasso.get().load(currentItem.getImage()).fit().centerInside().into(holder.picture);
     }
 
+    public void filterlist(ArrayList<Product> filteredItems){
+        productItems = filteredItems;
+        notifyDataSetChanged();
+
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView name, manufacturer, price, category;
+        public TextView name, manufacturer, price, category, quantity;
         public ImageView picture;
         OnProductListener onProductListener;
 
@@ -56,6 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             picture = itemView.findViewById(R.id.image_stock);
             price = itemView.findViewById(R.id.price_stock);
             category = itemView.findViewById(R.id.category_stock);
+            quantity = itemView.findViewById(R.id.quantity_stock);
             this.onProductListener = onProductListener;
 
             itemView.setOnClickListener(this);
@@ -82,11 +88,4 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public interface OnProductListener{
         void onProductClick(int position);
     }
-
-/*
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener = listener;
-    }
-
- */
 }

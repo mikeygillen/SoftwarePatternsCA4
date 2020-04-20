@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminActivity"></activity>
-        <activity android:name=".StoreActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".finalViews.AdminPurchaseView"></activity>
+        <activity android:name=".SubMenu.AdminViewCustomerActivity" />
+        <activity android:name=".SubMenu.AdminStockUpdate" />
+        <activity android:name=".Menus.AdminActivity" />
+        <activity android:name=".Menus.StoreActivity" />
+        <activity android:name=".Menus.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

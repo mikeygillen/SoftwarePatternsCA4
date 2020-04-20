@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4;
+package com.example.softwarepatternsca4.Adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.softwarepatternsca4.Classes.User;
+import com.example.softwarepatternsca4.R;
+
 import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {

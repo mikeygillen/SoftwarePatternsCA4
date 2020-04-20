@@ -1,8 +1,13 @@
-package com.example.softwarepatternsca4;
+package com.example.softwarepatternsca4.Classes;
+
+import com.google.firebase.database.Exclude;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class Product {
 
-    private String name, manufacturer, category, image;
+    private String name, manufacturer, category, image, key;
     private double price;
     private int quantity;
 
@@ -64,5 +69,13 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Exclude
+    public String getKey(){ return key; }
+
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
     }
 }

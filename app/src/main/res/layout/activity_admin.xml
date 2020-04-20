@@ -1,153 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Administration Mode"
+        android:textSize="50dp"
+        android:padding="25dp"
+        android:gravity="center"
+        android:layout_marginTop="30dp"/>
+
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:id="@+id/buttonUpdateStock"
+        android:text="Update Stock"/>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="64dp"
-            android:background="#FFF"
-            android:orientation="vertical">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:id="@+id/buttonViewCustomer"
+        android:text="Customer Details"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Update Stock"
-                android:textSize="20sp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:id="@+id/buttonMagic"
+        android:text="Magic"/>
 
-            <Button
-                android:id="@+id/viewmoreStock"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="280dp"
-                android:background="@null"
-                android:text="Expand" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/expandable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:background="@color/colorAccent"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/updateStockRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:background="@android:color/darker_gray"
-                android:padding="4dp"
-                android:scrollbars="vertical" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:layout_toLeftOf="@id/updateStockRecyclerView"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/button_plus_stock"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:text="Add"/>
-                <Button
-                    android:id="@+id/button_minus_stock"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:text="Minus"/>
-                <TextView
-                    android:id="@+id/stock_count_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="View Customers"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/viewmoreCustomers"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="280dp"
-                android:background="@null"
-                android:text="Expand" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:animateLayoutChanges="true"
-            android:id="@+id/expandable1"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorPrimary">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/customerRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:padding="4dp"
-                android:scrollbars="vertical" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title 3"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/viewmore2"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="280dp"
-                android:background="@null"
-                android:text="viewmore" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:animateLayoutChanges="true"
-            android:id="@+id/expandable2"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorPrimary">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Text messaging, or texting, is the act of composing and sending electronic messages, typically consisting of alphabetic and numeric characters"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

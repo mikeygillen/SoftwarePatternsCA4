@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SoftwarePatternsCA4</string>
+
+    <string-array name="product_array">
+        <item>Name (A-Z)</item>
+        <item>Name (Z-A)</item>
+        <item>Manufacturer</item>
+        <item>Category</item>
+        <item>Price (High-Low)</item>
+        <item>Price (Low-High)</item>
+    </string-array>
 </resources>

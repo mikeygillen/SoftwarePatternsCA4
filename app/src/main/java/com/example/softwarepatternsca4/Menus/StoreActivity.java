@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4;
+package com.example.softwarepatternsca4.Menus;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Classes.Product;
+import com.example.softwarepatternsca4.Adapters.ProductAdapter;
+import com.example.softwarepatternsca4.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnProductListener, Interface{
+public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnProductListener, Interface {
 
     private static final String TAG = "StoreActivity";
     private RecyclerView recyclerView;
