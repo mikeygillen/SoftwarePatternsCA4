@@ -128,7 +128,6 @@ public class AdminStockUpdate extends AppCompatActivity implements ProductAdapte
 
 
     private void filter(String text) {
-        //ArrayList<Product> filteredList = new ArrayList<>();
         for (Product item : prodList) {
             if(item.getName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);

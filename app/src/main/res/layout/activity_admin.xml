@@ -29,7 +29,7 @@
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
         android:id="@+id/buttonViewCustomer"
-        android:text="Customer Details"/>
+        android:text="View Order Details"/>
 
     <Button
         android:layout_width="match_parent"

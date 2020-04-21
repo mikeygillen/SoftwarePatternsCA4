@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4.finalViews;
+package com.example.softwarepatternsca4.StoreSubMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +20,7 @@ import com.example.softwarepatternsca4.Adapters.ReviewAdapter;
 import com.example.softwarepatternsca4.Classes.Review;
 import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
+import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +40,7 @@ public class UserProductReview extends AppCompatActivity implements Interface {
     private EditText ratingComment;
     private RatingBar ratingBar;
     private ImageView picture;
-    private Button addReview;
+    private Button addReview, addCart;
     private Product product = null;
     private int product_position = 0;
 
@@ -61,6 +62,7 @@ public class UserProductReview extends AppCompatActivity implements Interface {
         ratingBar = (RatingBar) findViewById(R.id.users_rating);
         ratingComment = (EditText) findViewById(R.id.users_comment);
         addReview = (Button) findViewById(R.id.button_add_comment);
+        addCart = (Button) findViewById(R.id.button_add_cart);
 
         name.setText(product.getName());
         manufacturer.setText(product.getManufacturer());
@@ -101,6 +103,17 @@ public class UserProductReview extends AppCompatActivity implements Interface {
                 updateReview();
             }
         });
+        addCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateCart();
+            }
+        });
+    }
+
+    private void updateCart() {
+        shoppingList.add(product);
+        startActivity(new Intent(UserProductReview.this, StoreActivity.class));
     }
 
     private void updateReview() {

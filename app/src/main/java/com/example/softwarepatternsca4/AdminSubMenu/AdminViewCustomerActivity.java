@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.softwarepatternsca4.Adapters.OrderAdapter;
 import com.example.softwarepatternsca4.Adapters.UserAdapter;
+import com.example.softwarepatternsca4.Classes.Order;
 import com.example.softwarepatternsca4.Classes.User;
 import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.R;
@@ -19,38 +21,39 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class AdminViewCustomerActivity extends AppCompatActivity implements UserAdapter.OnUserListener, Interface {
+public class AdminViewCustomerActivity extends AppCompatActivity implements Interface {
     private static final String TAG = "AdminViewCustomerActivity";
 
     private RecyclerView recyclerView;
-    private UserAdapter userAdapter;
-    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+    private OrderAdapter orderAdapter;
+    private DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_view_customer);
 
-        recyclerView = findViewById(R.id.customerRecyclerView);
+        recyclerView = findViewById(R.id.orderRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        orderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: snapshot = " + snapshot);
                 for (DataSnapshot result : snapshot.getChildren()) {
-                    String email = result.child("Email").getValue().toString();
-                    String address = result.child("Address").getValue().toString();
-                    String payment = result.child("Payment").getValue().toString();
+                    String name = result.child("user").getValue().toString();
+                    String address = result.child("shipping").getValue().toString();
+                    String payment = result.child("payment").getValue().toString();
+                    String products = result.child("products").getValue().toString();
 
-                    User user = new User(email, address, payment);
-                    userList.add(user);
+                    Order order = new Order(name, address, payment, products);
+                    orderList.add(order);
                 }
 
-                userAdapter = new UserAdapter(AdminViewCustomerActivity.this, userList);
-                recyclerView.setAdapter(userAdapter);
+                orderAdapter = new OrderAdapter(AdminViewCustomerActivity.this, orderList);
+                recyclerView.setAdapter(orderAdapter);
             }
 
             @Override
@@ -59,24 +62,4 @@ public class AdminViewCustomerActivity extends AppCompatActivity implements User
             }
         });
     }
-
-    @Override
-    public void onUserClick(int position) {
-        Toast.makeText(this, "User clicked" + userList.get(position).getEmail(), Toast.LENGTH_LONG).show();
-    }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            Log.e(TAG, "onSwiped swiped to view");
-            int position = viewHolder.getPosition();
-            final String user = userList.get(position).getEmail();
-            Toast.makeText(getApplication(), user + " Swiped", Toast.LENGTH_LONG).show();
-        }
-    };
 }

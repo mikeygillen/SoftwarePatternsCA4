@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements Interface {
         String password = password_login.getText().toString().trim();
 
         if (email.equals("Admin11") && password.equals("admin")) {
+            progressDialog.dismiss();
             this.finish();
             startActivity(new Intent(getApplicationContext(), AdminActivity.class));
         }
