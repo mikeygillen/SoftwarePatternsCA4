@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4.SubMenu;
+package com.example.softwarepatternsca4.AdminSubMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdminStockUpdate extends AppCompatActivity implements ProductAdapter.OnProductListener, Interface {
+public class AdminStockUpdate extends AppCompatActivity implements ProductAdapter.OnItemClickListener, Interface {
     private static final String TAG = "AdminStockUpdate";
 
     private DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("Products");
@@ -68,11 +68,13 @@ public class AdminStockUpdate extends AppCompatActivity implements ProductAdapte
                     int quantity = Integer.parseInt(result.child("Quantity").getValue().toString());
 
                     Product product = new Product(name, manufacturer, category, price, quantity, image);
+                    product.setKey(result.getKey());
                     prodList.add(product);
                 }
 
                 productAdapter = new ProductAdapter(AdminStockUpdate.this, prodList);
                 recyclerView.setAdapter(productAdapter);
+                productAdapter.setOnItemClickListener(AdminStockUpdate.this);
             }
 
             @Override
@@ -126,22 +128,25 @@ public class AdminStockUpdate extends AppCompatActivity implements ProductAdapte
 
 
     private void filter(String text) {
-        ArrayList<Product> filteredList = new ArrayList<>();
+        //ArrayList<Product> filteredList = new ArrayList<>();
         for (Product item : prodList) {
             if(item.getName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);
             }
         }
         productAdapter.filterlist(filteredList);
+
     }
 
     @Override
-    public void onProductClick(int position) {
-        Toast.makeText(this, "Item clicked" + prodList.get(position).getName(), Toast.LENGTH_LONG).show();
-        finish();
+    public void onItemClick(int position) {
+        Toast.makeText(this, "Product clicked" + prodList.get(position).getKey(), Toast.LENGTH_LONG).show();
+
+        //StockItem clickedStocKItem = stockItems.get(position);
+        String key = prodList.get(position).getKey();
+
         Intent intent = new Intent(AdminStockUpdate.this, AdminPurchaseView.class);
         intent.putExtra("product_position", position);
         startActivity(intent);
-
     }
 }

@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4.SubMenu;
+package com.example.softwarepatternsca4.AdminSubMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;

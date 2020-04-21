@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.softwarepatternsca4.SubMenu.AdminStockUpdate;
+import com.example.softwarepatternsca4.AdminSubMenu.AdminStockUpdate;
 import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.R;
@@ -39,7 +39,7 @@ public class AdminPurchaseView extends AppCompatActivity implements Interface {
         Intent intent = getIntent();
         product_position = intent.getIntExtra("product_position", 0);
 
-        product = prodList.get(product_position);
+        product = filteredList.get(product_position);
 
         name = findViewById(R.id.name_ap);
         manufacturer = findViewById(R.id.manufacturer_ap);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.R;
+import com.example.softwarepatternsca4.StoreSubMenu.ShoppingCart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,23 +30,27 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnProductListener, Interface {
-
+public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnItemClickListener, Interface {
     private static final String TAG = "StoreActivity";
+
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter<ProductAdapter.ViewHolder> adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private ProductAdapter productAdapter;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private String userid = mUser.getUid();
-    private DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(userid);
-    private DatabaseReference mProductRef = FirebaseDatabase.getInstance().getReference("Products");
+    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+    private DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Products");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+        prodList.clear();
+
+        recyclerView = findViewById(R.id.productRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         retrieveProducts();
 
@@ -57,7 +63,7 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
 
     private void retrieveProducts() {
         Log.d(TAG, "retrieveUsers: beginning");
-        mProductRef.addValueEventListener(new ValueEventListener() {
+        productRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: snapshot = " + snapshot);
@@ -72,6 +78,9 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
                     Product prod1 = new Product(name, manufacturer, category, price, quantity, image);
                     prodList.add(prod1);
                 }
+
+                productAdapter = new ProductAdapter(StoreActivity.this, prodList);
+                recyclerView.setAdapter(productAdapter);
             }
 
             @Override
@@ -79,22 +88,8 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
                 System.out.println("The Retrieve User Failed: ");
             }
         });
-        initRecyclerView(prodList);
         Log.d(TAG, "retrieveUsers: ending");
     }
-
-    private void initRecyclerView(ArrayList<Product> list) {
-        Log.d(TAG, "initRecyclerView: Beginning");
-        recyclerView = findViewById(R.id.productRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this, 2);
-        adapter = new ProductAdapter( this, prodList);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,6 +104,7 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         switch (item.getItemId()){
             case R.id.shoppingBasketIcon:
                 Toast.makeText(this, "Shopping Basket Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(StoreActivity.this, ShoppingCart.class));
                 return true;
             case R.id.checkout:
                 Toast.makeText(this, "Checkout selected", Toast.LENGTH_SHORT).show();
@@ -124,16 +120,10 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     }
 
     @Override
-    public void onProductClick(int position) {
+    public void onItemClick(int position) {
         Toast.makeText(this, "Item clicked" + prodList.get(position).getName(), Toast.LENGTH_LONG).show();
+        shoppingList.add(prodList.get(position));
     }
-
-   /* @Override
-    public void onClick(View v) {
-
-    }
-
-    */
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override

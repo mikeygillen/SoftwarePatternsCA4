@@ -1,6 +1,6 @@
 package com.example.softwarepatternsca4.Adapters;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.softwarepatternsca4.Classes.Product;
+import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> implements Interface {
     private static final String TAG = "ProductRecyclerAdapter";
 
     private ArrayList<Product> productItems;
-    //private ArrayList<Product> filteredItems;
-    private OnProductListener mOnProductListener;
+    private Context mContext;
+    private OnItemClickListener mListener;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item, parent, false);
-        return new ViewHolder(v, mOnProductListener);
+        return new ViewHolder(v);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -42,19 +42,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Picasso.get().load(currentItem.getImage()).fit().centerInside().into(holder.picture);
     }
 
+
     public void filterlist(ArrayList<Product> filteredItems){
         productItems = filteredItems;
         notifyDataSetChanged();
-
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name, manufacturer, price, category, quantity;
         public ImageView picture;
-        OnProductListener onProductListener;
 
-        public ViewHolder(@NonNull View itemView, OnProductListener onProductListener) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name_stock);
             manufacturer = itemView.findViewById(R.id.manufacturer_stock);
@@ -62,30 +61,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             price = itemView.findViewById(R.id.price_stock);
             category = itemView.findViewById(R.id.category_stock);
             quantity = itemView.findViewById(R.id.quantity_stock);
-            this.onProductListener = onProductListener;
 
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener !=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);}
+                    }}});
         }
-
-        @Override
-        public void onClick(View view) {
-            Log.d(TAG, "onClick: " + getAdapterPosition());
-            mOnProductListener.onProductClick(getAdapterPosition());
-        }
-    }
-
-    public ProductAdapter(OnProductListener onProductListener, ArrayList<Product> productList) {
-        this.productItems = productList;
-        //filteredItems = (ArrayList<Product>) productItems.clone();
-        this.mOnProductListener = onProductListener;
     }
 
     @Override
     public int getItemCount() {
-        return productItems.size();
+        return filteredList.size();
     }
 
-    public interface OnProductListener{
-        void onProductClick(int position);
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public ProductAdapter(Context context, ArrayList<Product> productList){
+        mContext = context;
+        this.productItems = productList;
     }
 }

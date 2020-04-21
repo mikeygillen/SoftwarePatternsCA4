@@ -2,9 +2,6 @@ package com.example.softwarepatternsca4.Classes;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.Comparator;
-import java.util.List;
-
 public class Product {
 
     private String name, manufacturer, category, image, key;

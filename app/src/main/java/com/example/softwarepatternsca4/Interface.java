@@ -9,6 +9,7 @@ public interface Interface {
 
     ArrayList<User> userList = new ArrayList<>();
     ArrayList<Product> prodList = new ArrayList<>();
-    ArrayList<Product> shoppingCart = new ArrayList<>();
+    ArrayList<Product> filteredList = new ArrayList<>();
+    ArrayList<Product> shoppingList = new ArrayList<>();
 
 }
