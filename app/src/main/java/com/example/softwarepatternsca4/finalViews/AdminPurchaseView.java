@@ -39,7 +39,7 @@ public class AdminPurchaseView extends AppCompatActivity implements Interface {
         Intent intent = getIntent();
         product_position = intent.getIntExtra("product_position", 0);
 
-        product = filteredList.get(product_position);
+        product = prodList.get(product_position);
 
         name = findViewById(R.id.name_ap);
         manufacturer = findViewById(R.id.manufacturer_ap);

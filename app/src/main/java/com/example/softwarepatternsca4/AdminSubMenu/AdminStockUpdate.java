@@ -142,8 +142,11 @@ public class AdminStockUpdate extends AppCompatActivity implements ProductAdapte
     public void onItemClick(int position) {
         Toast.makeText(this, "Product clicked" + prodList.get(position).getKey(), Toast.LENGTH_LONG).show();
 
-        //StockItem clickedStocKItem = stockItems.get(position);
         String key = prodList.get(position).getKey();
+        int key1 = Integer.parseInt(prodList.get(position).getKey());
+
+        Log.d(TAG, "onItemClick: key = " + key);
+        Log.d(TAG, "onItemClick: key1 = " + key1);
 
         Intent intent = new Intent(AdminStockUpdate.this, AdminPurchaseView.class);
         intent.putExtra("product_position", position);

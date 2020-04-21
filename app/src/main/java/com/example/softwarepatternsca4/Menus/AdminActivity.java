@@ -27,18 +27,14 @@ public class AdminActivity  extends AppCompatActivity{
         toProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AdminActivity.this, AdminStockUpdate.class);
-                finish();
-                startActivity(i);
+                startActivity(new Intent(AdminActivity.this, AdminStockUpdate.class));
             }
         });
 
         toCustomers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AdminActivity.this, AdminViewCustomerActivity.class);
-                finish();
-                startActivity(i);
+                startActivity(new Intent(AdminActivity.this, AdminViewCustomerActivity.class));
             }
         });
 

@@ -17,21 +17,22 @@
         card_view:cardElevation="@dimen/cardview_compat_inset_shadow">
 
         <TextView
-            android:id="@+id/comment_name"
+            android:id="@+id/comment_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/comment_comment"
+            android:id="@+id/comment_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:textSize="12sp" />
+            android:textSize="18dp" />
+
 
         <RatingBar
             android:id="@+id/comment_rating"

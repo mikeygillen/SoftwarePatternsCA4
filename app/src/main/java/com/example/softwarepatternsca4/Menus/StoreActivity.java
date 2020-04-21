@@ -2,17 +2,18 @@ package com.example.softwarepatternsca4.Menus;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.softwarepatternsca4.Interface;
@@ -20,6 +21,7 @@ import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.R;
 import com.example.softwarepatternsca4.StoreSubMenu.ShoppingCart;
+import com.example.softwarepatternsca4.finalViews.UserProductReview;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnItemClickListener, Interface {
     private static final String TAG = "StoreActivity";
@@ -48,6 +48,8 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         setContentView(R.layout.activity_store);
         prodList.clear();
 
+        EditText search = (EditText) findViewById(R.id.searchBar);
+
         recyclerView = findViewById(R.id.productRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,6 +61,31 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        for (Product item : prodList) {
+            if(item.getName().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+        productAdapter.filterlist(filteredList);
     }
 
     private void retrieveProducts() {
@@ -68,12 +95,12 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: snapshot = " + snapshot);
                 for (DataSnapshot result : snapshot.getChildren()) {
-                    String name = result.child("Name").getValue().toString();
-                    String manufacturer = result.child("Manufacturer").getValue().toString();
-                    String category = result.child("Category").getValue().toString();
-                    double price = Double.parseDouble(result.child("Price").getValue().toString());
-                    int quantity = Integer.parseInt(result.child("Quantity").getValue().toString());
-                    String image = result.child("Image").getValue().toString();
+                    String name = result.child("name").getValue().toString();
+                    String manufacturer = result.child("manufacturer").getValue().toString();
+                    String category = result.child("category").getValue().toString();
+                    double price = Double.parseDouble(result.child("price").getValue().toString());
+                    int quantity = Integer.parseInt(result.child("quantity").getValue().toString());
+                    String image = result.child("image").getValue().toString();
 
                     Product prod1 = new Product(name, manufacturer, category, price, quantity, image);
                     prodList.add(prod1);
@@ -81,6 +108,7 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
 
                 productAdapter = new ProductAdapter(StoreActivity.this, prodList);
                 recyclerView.setAdapter(productAdapter);
+                productAdapter.setOnItemClickListener(StoreActivity.this);
             }
 
             @Override
@@ -122,22 +150,9 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     @Override
     public void onItemClick(int position) {
         Toast.makeText(this, "Item clicked" + prodList.get(position).getName(), Toast.LENGTH_LONG).show();
-        shoppingList.add(prodList.get(position));
+        //shoppingList.add(prodList.get(position));
+        Intent intent = new Intent(StoreActivity.this, UserProductReview.class);
+        intent.putExtra("product_position", position);
+        startActivity(intent);
     }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            Log.e(TAG, "onSwiped swiped to view");
-            int position = viewHolder.getPosition();
-            final String prodName = prodList.get(position).getName();
-
-            Toast.makeText(getApplication(), prodName + " Selected", Toast.LENGTH_LONG).show();
-        }
-    };
 }

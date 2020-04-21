@@ -11,12 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.softwarepatternsca4.Classes.Product;
-import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> implements Interface {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private static final String TAG = "ProductRecyclerAdapter";
 
     private ArrayList<Product> productItems;
@@ -75,7 +74,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return filteredList.size();
+        return productItems.size();
     }
 
     public interface OnItemClickListener{
