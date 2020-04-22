@@ -35,8 +35,9 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
     private String userid = mUser.getUid();
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-    private String name, address, payment, discountCode;
+    private String name, address, payment, discountCode, key;
     private double netCost, discountValue, grossCost;
+    private int stock;
     private TextView subTotal, discount, total;
     private Button purchase;
 
@@ -137,8 +138,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                 Log.d("ssd", "onComplete: " + error);
             }
         });
-
-
         startActivity(new Intent(ShoppingCart.this, StoreActivity.class));
     }
 
@@ -151,39 +150,28 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         progressDialog.setMessage("Purchasing...");
         progressDialog.show();
 
+        for(final Product item : shoppingList){
+            stock = item.getQuantity() - 1;
 
-        for(Product item : shoppingList){
-            Log.d(TAG, "updateStock: item = " +item);
-            Log.d(TAG, "updateStock: itemQuantity = " +item.getQuantity());
-
-            final DatabaseReference currentProdRef = FirebaseDatabase.getInstance().getReference().child("Products").child(item.getName());
-
-            currentProdRef.addValueEventListener(new ValueEventListener() {
+            final DatabaseReference currentProdRef = FirebaseDatabase.getInstance().getReference().child("Products");
+            currentProdRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    Log.d(TAG, "onDataChange: snapshot = " + snapshot);
-                        //int quantity = Integer.parseInt(snapshot.child("Quantity").getValue().toString());
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot result : snapshot.getChildren()) {
+                        if(result.child("name").getValue().toString().equalsIgnoreCase(item.getName())) {
+                            key = result.getKey();
+                        }
+                    }
+                    currentProdRef.child(key).child("Quantity").setValue(stock);
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    System.out.println("Purchase Failed: ");
                 }
             });
+            Log.d(TAG, "updateStock: new quantity = " + stock);
         }
-/*
-        int orderAmount = Integer.parseInt(purchaseQuantity.getText().toString().trim());
-        int newStockAmount = orderAmount + product.getQuantity();
-        String databaseProdPosition = String.valueOf(product_position + 1);
-        Log.d(TAG, "updateStock: newAmount = " + newStockAmount);
-
-        Log.d(TAG, "updateStock: dataRef = " + currentProdRef);
-        currentProdRef.child("Quantity").setValue(newStockAmount);
-
- */
-
         progressDialog.dismiss();
         Toast.makeText(getApplication(), "Purchase Complete ", Toast.LENGTH_LONG).show();
-
-        //startActivity(new Intent(ShoppingCart.this, StoreActivity.class));
     }
 }
