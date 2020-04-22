@@ -1,10 +1,12 @@
 package com.example.softwarepatternsca4.StoreSubMenu;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,12 +118,20 @@ public class UserProductReview extends AppCompatActivity implements Interface {
 
                 if (product.getQuantity() <= 0) {
                     state = noStock.stateOfStock();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UserProductReview.this);
+                    alertDialogBuilder.setTitle("Error");
+                    alertDialogBuilder.setMessage("Unfortunately this item is out of stock. \n Please try again later.");
+                    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alertDialogBuilder.create().show();
                 }
                 else {
                     state = hasStock.stateOfStock();
                     updateCart();
                 }
-                //updateCart();
             }
         });
     }

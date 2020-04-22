@@ -1,11 +1,13 @@
 package com.example.softwarepatternsca4.finalViews;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.example.softwarepatternsca4.Interfaces.Iterator;
 import com.example.softwarepatternsca4.Interfaces.PriceRepository;
 import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;
+import com.example.softwarepatternsca4.StoreSubMenu.UserProductReview;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -76,8 +79,24 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateStock();
-                createOrder();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShoppingCart.this);
+                alertDialogBuilder.setTitle("Confirm");
+                alertDialogBuilder.setMessage("Are you happy with your order?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateStock();
+                        createOrder();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ShoppingCart.this, "Purchase not complete", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                alertDialogBuilder.create().show();
             }
         });
 
