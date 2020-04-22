@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.R;

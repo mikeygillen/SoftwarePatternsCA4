@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.Classes.Product;
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.R;
 import com.example.softwarepatternsca4.finalViews.AdminPurchaseView;
 import com.google.firebase.database.DataSnapshot;
@@ -26,8 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class AdminStockUpdate extends AppCompatActivity implements ProductAdapter.OnItemClickListener, Interface {
     private static final String TAG = "AdminStockUpdate";

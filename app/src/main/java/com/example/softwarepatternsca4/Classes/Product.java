@@ -1,5 +1,4 @@
 package com.example.softwarepatternsca4.Classes;
-
 import com.google.firebase.database.Exclude;
 
 public class Product {
@@ -75,4 +74,5 @@ public class Product {
     public void setKey(String key) {
         this.key = key;
     }
+
 }

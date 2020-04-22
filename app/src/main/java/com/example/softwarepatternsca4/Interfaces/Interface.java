@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4;
+package com.example.softwarepatternsca4.Interfaces;
 
 import com.example.softwarepatternsca4.Classes.Order;
 import com.example.softwarepatternsca4.Classes.Product;

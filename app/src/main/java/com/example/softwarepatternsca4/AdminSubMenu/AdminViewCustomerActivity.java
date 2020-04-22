@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.example.softwarepatternsca4.Adapters.OrderAdapter;
 import com.example.softwarepatternsca4.Classes.Order;
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.softwarepatternsca4.Adapters.ReviewAdapter;
 import com.example.softwarepatternsca4.Classes.Review;
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;

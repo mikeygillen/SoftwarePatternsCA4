@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.softwarepatternsca4.AdminSubMenu.AdminStockUpdate;
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.R;
 import com.google.firebase.database.DatabaseReference;

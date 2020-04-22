@@ -17,7 +17,9 @@ import android.widget.Toast;
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.Classes.Order;
 import com.example.softwarepatternsca4.Classes.Product;
-import com.example.softwarepatternsca4.Interface;
+import com.example.softwarepatternsca4.Interfaces.Interface;
+import com.example.softwarepatternsca4.Interfaces.Iterator;
+import com.example.softwarepatternsca4.Interfaces.PriceRepository;
 import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,10 +62,15 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         total = findViewById(R.id.purchasePrice_sc);
         purchase = findViewById(R.id.button_purchase_sc);
 
+        PriceRepository priceRepository = new PriceRepository();
 
-        for (Product item : shoppingList){
-            netCost = netCost + item.getPrice();
+        for(Iterator iter = priceRepository.getIterator(); iter.hasNext();){
+            Product name = (Product) iter.next();
+            Log.d(TAG, "onCreate: price = " + name.getPrice());
+            Log.d(TAG, "onCreate: Name = " + name.getName());
+            netCost = netCost + name.getPrice();
         }
+
         subTotal.setText("$" + netCost);
 
         purchase.setOnClickListener(new View.OnClickListener() {
