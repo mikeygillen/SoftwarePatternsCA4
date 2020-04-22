@@ -145,6 +145,7 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                 Log.d("ssd", "onComplete: " + error);
             }
         });
+        shoppingList.clear();
         startActivity(new Intent(ShoppingCart.this, StoreActivity.class));
     }
 
@@ -176,7 +177,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-            Log.d(TAG, "updateStock: new quantity = " + stock);
         }
         progressDialog.dismiss();
         Toast.makeText(getApplication(), "Purchase Complete ", Toast.LENGTH_LONG).show();

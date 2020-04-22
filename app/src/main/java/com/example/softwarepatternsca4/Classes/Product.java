@@ -6,17 +6,20 @@ public class Product {
     private String name, manufacturer, category, image, key;
     private double price;
     private int quantity;
+    private boolean state;
 
     public Product() {
     }
 
-    public Product(String name, String manufacturer, String category, double price, int quantity, String image) {
+    public Product(String name, String manufacturer, String category, String image, String key, double price, int quantity, boolean state) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.category = category;
+        this.image = image;
+        this.key = key;
         this.price = price;
         this.quantity = quantity;
-        this.image = image;
+        this.state = state;
     }
 
     public String getName() {
@@ -65,6 +68,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 
     @Exclude

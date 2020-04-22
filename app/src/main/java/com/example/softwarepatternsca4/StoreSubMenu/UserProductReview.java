@@ -22,6 +22,9 @@ import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;
+import com.example.softwarepatternsca4.States.InStock;
+import com.example.softwarepatternsca4.States.OutOfStock;
+import com.example.softwarepatternsca4.States.StockState;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,7 +110,18 @@ public class UserProductReview extends AppCompatActivity implements Interface {
         addCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateCart();
+                boolean state;
+                StockState noStock = new OutOfStock();
+                StockState hasStock = new InStock();
+
+                if (product.getQuantity() <= 0) {
+                    state = noStock.stateOfStock();
+                }
+                else {
+                    state = hasStock.stateOfStock();
+                    updateCart();
+                }
+                //updateCart();
             }
         });
     }
