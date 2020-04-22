@@ -78,6 +78,7 @@ public class UserProductReview extends AppCompatActivity implements Interface {
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                reviews.clear();
                 Log.d(TAG, "onDataChange: snapshot = " + snapshot);
                 for (DataSnapshot result : snapshot.getChildren()) {
                     String prodName = result.child("productName").getValue().toString();

@@ -2,6 +2,7 @@ package com.example.softwarepatternsca4.Menus;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.softwarepatternsca4.Interface;
@@ -28,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class StoreActivity extends AppCompatActivity implements ProductAdapter.OnItemClickListener, Interface {
@@ -42,6 +48,9 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userid);
     private DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Products");
 
+    private Spinner filter;
+    private String orderBy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +58,14 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         prodList.clear();
 
         EditText search = (EditText) findViewById(R.id.searchBar);
+        filter = (Spinner) findViewById(R.id.spinner_product);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.product_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filter.setAdapter(adapter);
 
         recyclerView = findViewById(R.id.productRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        retrieveProducts();
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
@@ -77,6 +88,79 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
                 filter(s.toString());
             }
         });
+
+        filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String sortRequest = (String) filter.getSelectedItem();
+                Toast.makeText(getApplication(), "Item Selected " + sortRequest, Toast.LENGTH_SHORT).show();
+                if (sortRequest.equals("Name (A-Z)")){
+                    orderBy = "name";
+                } else if (sortRequest.equals("Name (Z-A)")) {
+                    orderBy = "name";
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(StoreActivity.this);
+                    mLayoutManager.setStackFromEnd(true);
+                    GridLayoutManager layout = new GridLayoutManager(StoreActivity.this, 1);
+                    layout.setReverseLayout(true);
+                    recyclerView.setLayoutManager(layout);
+                }else if (sortRequest.equals("Manufacturer")) {
+                    orderBy = "manufacturer";
+                }else if (sortRequest.equals("Category")) {
+                    orderBy = "category";
+                }else if (sortRequest.equals("Price (High-Low)")) {
+                    orderBy = "price";
+                }
+                else if (sortRequest.equals("Price (Low-High)")) {
+                    orderBy = "price";
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(StoreActivity.this);
+                    mLayoutManager.setStackFromEnd(true);
+                    GridLayoutManager layout = new GridLayoutManager(StoreActivity.this, 1);
+                    layout.setReverseLayout(true);
+                    recyclerView.setLayoutManager(layout);
+                }
+                Query queryRef = productRef.orderByChild(orderBy).limitToLast(10);
+                queryRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        prodList.clear();
+                        for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                        {
+                            Product productItem = dataSnapshot1.getValue(Product.class);
+                            prodList.add(productItem);
+                        }
+                        productAdapter = new ProductAdapter(StoreActivity.this, prodList);
+                        recyclerView.setAdapter(productAdapter);
+                        productAdapter.setOnItemClickListener(StoreActivity.this);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        productRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: snapshot = " + snapshot);
+                for (DataSnapshot result : snapshot.getChildren()) {
+                    Product prod1 = result.getValue(Product.class);
+                    prodList.add(prod1);
+                }
+
+                productAdapter = new ProductAdapter(StoreActivity.this, prodList);
+                recyclerView.setAdapter(productAdapter);
+                productAdapter.setOnItemClickListener(StoreActivity.this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The Retrieve User Failed: ");
+            }
+        });
     }
 
     private void filter(String text) {
@@ -88,7 +172,7 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         productAdapter.filterlist(filteredList);
     }
 
-    private void retrieveProducts() {
+    /*private void retrieveProducts() {
         Log.d(TAG, "retrieveUsers: beginning");
         productRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -118,6 +202,8 @@ public class StoreActivity extends AppCompatActivity implements ProductAdapter.O
         });
         Log.d(TAG, "retrieveUsers: ending");
     }
+
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

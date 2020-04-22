@@ -131,7 +131,7 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
             products = item.getName() + ", " + products;
         }
         final String finalProducts = products;
-        final Order order = new Order(name, address, payment, products);
+        final Order order = new Order(name, address, payment, products, grossCost);
 
         newOrder.child(orderKey).setValue(order, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
@@ -162,7 +162,7 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                             key = result.getKey();
                         }
                     }
-                    currentProdRef.child(key).child("Quantity").setValue(stock);
+                    currentProdRef.child(key).child("quantity").setValue(stock);
                 }
 
                 @Override

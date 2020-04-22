@@ -60,14 +60,7 @@ public class AdminStockUpdate extends AppCompatActivity implements ProductAdapte
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: snapshot = " + snapshot);
                 for (DataSnapshot result : snapshot.getChildren()) {
-                    String name = result.child("Name").getValue().toString();
-                    String manufacturer = result.child("Manufacturer").getValue().toString();
-                    String image = result.child("Image").getValue().toString();
-                    String category = result.child("Category").getValue().toString();
-                    double price = Double.parseDouble(result.child("Price").getValue().toString());
-                    int quantity = Integer.parseInt(result.child("Quantity").getValue().toString());
-
-                    Product product = new Product(name, manufacturer, category, price, quantity, image);
+                    Product product = result.getValue(Product.class);
                     product.setKey(result.getKey());
                     prodList.add(product);
                 }

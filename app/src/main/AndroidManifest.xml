@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StoreSubMenu.UserProductReview"></activity>
-        <activity android:name=".StoreSubMenu.UserProductView" />
         <activity android:name=".finalViews.ShoppingCart" />
         <activity android:name=".finalViews.AdminPurchaseView" />
         <activity android:name=".AdminSubMenu.AdminViewCustomerActivity" />

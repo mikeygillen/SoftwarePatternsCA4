@@ -33,7 +33,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
         holder.name.setText(currentItem.getUser());
         holder.address.setText(currentItem.getShipping());
-        holder.payment.setText(currentItem.getPayment());
+        holder.payment.setText("$" + currentItem.getCost() + " by " + currentItem.getPayment());
         holder.products.setText(currentItem.getProducts());
     }
 

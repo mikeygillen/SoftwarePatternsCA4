@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 public class Order {
     private String user, shipping, payment, products;
-    //private ArrayList<String> products;
+    private double cost;
 
     public Order() {
     }
 
-    public Order(String user, String shipping, String payment, String products) {
+    public Order(String user, String shipping, String payment, String products, double cost) {
         this.user = user;
         this.shipping = shipping;
         this.payment = payment;
         this.products = products;
+        this.cost = cost;
     }
 
     public String getUser() {
@@ -46,5 +47,13 @@ public class Order {
 
     public void setProducts(String products) {
         this.products = products;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }

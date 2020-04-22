@@ -1,18 +1,14 @@
 package com.example.softwarepatternsca4.AdminSubMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.softwarepatternsca4.Adapters.OrderAdapter;
-import com.example.softwarepatternsca4.Adapters.UserAdapter;
 import com.example.softwarepatternsca4.Classes.Order;
-import com.example.softwarepatternsca4.Classes.User;
 import com.example.softwarepatternsca4.Interface;
 import com.example.softwarepatternsca4.R;
 import com.google.firebase.database.DataSnapshot;
@@ -47,8 +43,9 @@ public class AdminViewCustomerActivity extends AppCompatActivity implements Inte
                     String address = result.child("shipping").getValue().toString();
                     String payment = result.child("payment").getValue().toString();
                     String products = result.child("products").getValue().toString();
+                    double cost = Double.parseDouble(result.child("cost").getValue().toString());
 
-                    Order order = new Order(name, address, payment, products);
+                    Order order = new Order(name, address, payment, products, cost);
                     orderList.add(order);
                 }
 
