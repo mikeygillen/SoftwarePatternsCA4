@@ -1,4 +1,4 @@
-package com.example.softwarepatternsca4.finalViews;
+package com.example.softwarepatternsca4.StoreSubMenu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -24,7 +24,7 @@ import com.example.softwarepatternsca4.Interfaces.Iterator;
 import com.example.softwarepatternsca4.Interfaces.PriceRepository;
 import com.example.softwarepatternsca4.Menus.StoreActivity;
 import com.example.softwarepatternsca4.R;
-import com.example.softwarepatternsca4.StoreSubMenu.UserProductReview;
+import com.example.softwarepatternsca4.finalViews.UserCheckout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,8 +69,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
 
         for(Iterator iter = priceRepository.getIterator(); iter.hasNext();){
             Product name = (Product) iter.next();
-            Log.d(TAG, "onCreate: price = " + name.getPrice());
-            Log.d(TAG, "onCreate: Name = " + name.getName());
             netCost = netCost + name.getPrice();
         }
 
@@ -79,24 +77,9 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShoppingCart.this);
-                alertDialogBuilder.setTitle("Confirm");
-                alertDialogBuilder.setMessage("Are you happy with your order?");
-                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateStock();
-                        createOrder();
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(ShoppingCart.this, "Purchase not complete", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-                alertDialogBuilder.create().show();
+                Intent intent = new Intent(ShoppingCart.this, UserCheckout.class);
+                intent.putExtra("total", grossCost);
+                startActivity(intent);
             }
         });
 
@@ -105,7 +88,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 name = snapshot.child("Email").getValue().toString();
                 address = snapshot.child("Address").getValue().toString();
-                payment = snapshot.child("Payment").getValue().toString();
                 discountCode = snapshot.child("Discount").getValue().toString();
                 Log.d(TAG, "onDataChange: discountCode = " + discountCode);
                 if (discountCode.equals("premium")){
@@ -115,7 +97,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                 }else {
                     discountValue = 1;
                 }
-
                 calculateCost();
             }
 
@@ -146,7 +127,7 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
     }
 
 
-
+/*
     private void createOrder() {
         Log.d(TAG, "Creating Order");
         DatabaseReference newOrder = FirebaseDatabase.getInstance().getReference().child("Orders");
@@ -200,4 +181,6 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         progressDialog.dismiss();
         Toast.makeText(getApplication(), "Purchase Complete ", Toast.LENGTH_LONG).show();
     }
+
+ */
 }

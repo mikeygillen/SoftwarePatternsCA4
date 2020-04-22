@@ -25,7 +25,7 @@ import com.example.softwarepatternsca4.Interfaces.Interface;
 import com.example.softwarepatternsca4.Classes.Product;
 import com.example.softwarepatternsca4.Adapters.ProductAdapter;
 import com.example.softwarepatternsca4.R;
-import com.example.softwarepatternsca4.finalViews.ShoppingCart;
+import com.example.softwarepatternsca4.StoreSubMenu.ShoppingCart;
 import com.example.softwarepatternsca4.StoreSubMenu.UserProductReview;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

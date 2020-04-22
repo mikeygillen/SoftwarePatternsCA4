@@ -9,4 +9,11 @@
         <item>Price (High-Low)</item>
         <item>Price (Low-High)</item>
     </string-array>
+
+    <string-array name="card_type">
+        <item>-Choose your Card Type-</item>
+        <item>Visa</item>
+        <item>MasterCard</item>
+        <item>Revolut</item>
+    </string-array>
 </resources>
