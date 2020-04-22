@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements Interface {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private EditText email_login, password_login, email_signup, password_signup, address_signup, payment_signup;
+    private EditText email_login, password_login, email_signup, password_signup, address_signup, payment_signup, discount_signup;
     private Button button_login, button_signup;
 
     private FirebaseAuth firebaseAuth;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements Interface {
         password_signup = (EditText) findViewById(R.id.signup_password);
         address_signup = (EditText) findViewById(R.id.signup_address);
         payment_signup = (EditText) findViewById(R.id.signup_payment);
+        discount_signup = (EditText) findViewById(R.id.signup_discount);
 
         button_login = (Button) findViewById(R.id.btn_login);
         button_signup = (Button) findViewById(R.id.btn_signup);
@@ -136,6 +137,16 @@ public class MainActivity extends AppCompatActivity implements Interface {
         final String address = address_signup.getText().toString();
         final String payment = payment_signup.getText().toString();
 
+        final String discount;
+        String discountCode = discount_signup.getText().toString();
+        if (discountCode.equals("health25")){
+            discount = "premium";
+        }else if (discountCode.equals("health10")){
+            discount = "standard";
+        }else{
+            discount = "none";
+        }
+
         // TODO: Implement your own signup logic here.
         progressDialog.setMessage("Registering new Account...");
         progressDialog.show();
@@ -152,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements Interface {
                     newUser[0].child("Email").setValue(email);
                     newUser[0].child("Address").setValue(address);
                     newUser[0].child("Payment").setValue(payment);
+                    newUser[0].child("Discount").setValue(discount);
 
                     onLoginSuccess();
                 } else {

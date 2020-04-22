@@ -35,9 +35,8 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
     private String userid = mUser.getUid();
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-    private String name;
-    private String address;
-    private String payment;
+    private String name, address, payment, discountCode;
+    private double netCost, discountValue, grossCost;
     private TextView subTotal, discount, total;
     private Button purchase;
 
@@ -60,7 +59,12 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
         total = findViewById(R.id.purchasePrice_sc);
         purchase = findViewById(R.id.button_purchase_sc);
 
-        calculateCost();
+
+        for (Product item : shoppingList){
+            netCost = netCost + item.getPrice();
+        }
+        subTotal.setText("$" + netCost);
+
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +79,17 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
                 name = snapshot.child("Email").getValue().toString();
                 address = snapshot.child("Address").getValue().toString();
                 payment = snapshot.child("Payment").getValue().toString();
+                discountCode = snapshot.child("Discount").getValue().toString();
+                Log.d(TAG, "onDataChange: discountCode = " + discountCode);
+                if (discountCode.equals("premium")){
+                    discountValue = 0.75;
+                }else if (discountCode.equals("standard")){
+                    discountValue = 0.90;
+                }else {
+                    discountValue = 1;
+                }
+
+                calculateCost();
             }
 
             @Override
@@ -85,14 +100,11 @@ public class ShoppingCart extends AppCompatActivity implements ProductAdapter.On
     }
 
     private void calculateCost() {
-        double netCost=0, grossCost=0, discounts=0;
-        for (Product item : shoppingList){
-            netCost = netCost + item.getPrice();
-        }
-        grossCost = netCost - discounts;
+        grossCost = netCost * discountValue;
+        String discountText = String.valueOf(grossCost-netCost);
 
         subTotal.setText("$" + netCost);
-        discount.setText("$" + discounts);
+        discount.setText("$" + discountText);
         total.setText("$" + grossCost);
     }
 

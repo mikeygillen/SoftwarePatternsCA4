@@ -82,6 +82,15 @@
             android:singleLine="true"
             android:autofillHints="" />
 
+        <!--  Discount Label -->
+        <EditText android:id="@+id/signup_discount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Discount Code"
+            android:singleLine="true"
+            android:autofillHints="" />
+
         <!-- Signup Button -->
         <Button
             android:id="@+id/btn_signup"
